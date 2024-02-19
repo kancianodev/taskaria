@@ -1,0 +1,10 @@
+﻿@model Taskaria.Models.Task
+
+<h2>Potwierdź Usunięcie Zadania</h2>
+
+<p>Czy na pewno chcesz usunąć zadanie o ID: @Model.Id?</p>
+
+<form asp-controller="Task" asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Tak, Usuń</button> |
+    <a asp-controller="Task" asp-action="Index">Nie, Anuluj</a>
+</form>

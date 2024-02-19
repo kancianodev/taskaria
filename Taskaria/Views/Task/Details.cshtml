@@ -1,0 +1,67 @@
+﻿@model Taskaria.Models.Task
+
+<h2>Detale Zadania</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">ID:</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+
+        <dt class="col-sm-2">Tytuł:</dt>
+        <dd class="col-sm-10">@Model.Title</dd>
+
+        <dt class="col-sm-2">Opis:</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+
+        <dt class="col-sm-2">Data rozpoczęcia:</dt>
+        <dd class="col-sm-10">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+        <dt class="col-sm-2">Data wykonania:</dt>
+        <dd class="col-sm-10">
+            @if (Model.CompletedAt.HasValue)
+            {
+                @Model.CompletedAt.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            }
+            else
+            {
+                <span>Nieukończone</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">Status:</dt>
+        <dd class="col-sm-10">
+            @if (Model.IsCompleted)
+            {
+                <span class="text-success">Ukończone</span>
+            }
+            else
+            {
+                <span class="text-warning">Nieukończone</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">Priorytet:</dt>
+        <dd class="col-sm-10">
+            @if (Model.Priority == "Niski")
+            {
+                <span class="text-info">Niski</span>
+            }
+            else if (Model.Priority == "Średni")
+            {
+                <span class="text-warning">Średni</span>
+            }
+            else if (Model.Priority == "Wysoki")
+            {
+                <span class="text-danger">Wysoki</span>
+            }
+            else if (Model.Priority == "BardzoPilny")
+            {
+                <span class="text-danger font-weight-bold">Bardzo pilny</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index">Powrót do listy zadań</a>
+</div>

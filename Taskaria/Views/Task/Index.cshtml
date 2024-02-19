@@ -1,0 +1,77 @@
+﻿@model List<Taskaria.Models.Task>
+
+<h2>Lista Zadań</h2>
+
+<div class="table-controls">
+    <form asp-controller="Task" asp-action="Index" method="get">
+        <div class="form-group">
+            <button type="submit" name="tableType" value="all" class="btn @if(ViewData["CurrentTable"].ToString() == "all") { <text>btn-primary</text> } else { <text>btn-secondary</text> }">Wszystkie</button>
+            <button type="submit" name="tableType" value="notCompleted" class="btn @if(ViewData["CurrentTable"].ToString() == "notCompleted") { <text>btn-primary</text> } else { <text>btn-secondary</text> }">Niewykonane</button>
+            <button type="submit" name="tableType" value="completed" class="btn @if(ViewData["CurrentTable"].ToString() == "completed") { <text>btn-primary</text> } else { <text>btn-secondary</text> }">Wykonane</button>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tytuł</th>
+            <th>Data Rozpoczęcia</th>
+            <th>Projekt</th>
+            <th>Termin Wykonania</th>
+            <th>Status</th>
+            <th>Priorytet</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model.OrderBy(t => t.DueDate))
+        {
+            <tr>
+                <td>@task.Id</td>
+                <td>@task.Title</td>
+                <td>@task.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@task.Project</td>
+                <td>@task.DueDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>
+                    @if (task.IsCompleted)
+                    {
+                        <span style="color: green; font-weight: bold;">✔ Wykonane</span>
+                    }
+                    else
+                    {
+                        <span style="color: red; font-weight: bold;">✘ Nie wykonane</span>
+                    }
+                </td>
+                <td>
+                    @if (task.Priority == "Niski")
+                    {
+                        <span class="text-info">N</span>
+                    }
+                    else if (task.Priority == "Średni")
+                    {
+                        <span class="text-warning">Ś</span>
+                    }
+                    else if (task.Priority == "Wysoki")
+                    {
+                        <span class="text-danger">W</span>
+                    }
+                    else if (task.Priority == "BardzoPilny")
+                    {
+                        <span class="text-danger font-weight-bold">BP</span>
+                    }
+                </td>
+                <td>
+                    <a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id">Podgląd</a> |
+                    <a asp-controller="Task" asp-action="Edit" asp-route-id="@task.Id">Edytuj</a> |
+                    <a asp-controller="Task" asp-action="Delete" asp-route-id="@task.Id">Usuń</a> |
+                    @if (!task.IsCompleted)
+                    {
+                        <a asp-controller="Task" asp-action="MarkAsCompleted" asp-route-id="@task.Id">Oznacz jako wykonane</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
